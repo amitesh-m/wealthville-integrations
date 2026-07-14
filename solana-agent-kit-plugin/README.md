@@ -14,6 +14,10 @@ All read-only (public `GET` endpoints — no wallet access, nothing to sign). Ev
 
 ## Usage
 
+```bash
+npm install @wealthville/solana-agent-kit-plugin
+```
+
 ```ts
 import { SolanaAgentKit } from 'solana-agent-kit';
 import WealthvillePlugin from '@wealthville/solana-agent-kit-plugin';

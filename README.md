@@ -4,19 +4,16 @@ Official connectors for the [Wealthville](https://wealthville.net) public data A
 
 | Package | For | Install |
 | :--- | :--- | :--- |
-| [`mcp-server`](mcp-server/) | Claude, Cursor, any [MCP](https://modelcontextprotocol.io) client | `npx -y @wealthville/mcp-server` (npm pending — build from source below) |
-| [`solana-agent-kit-plugin`](solana-agent-kit-plugin/) | [Solana Agent Kit](https://github.com/sendaifun/solana-agent-kit) v2 agents | see package README |
-| [`elizaos-plugin`](elizaos-plugin/) | [ElizaOS](https://github.com/elizaOS/eliza) agents | see package README |
+| [`mcp-server`](mcp-server/) | Claude, Cursor, any [MCP](https://modelcontextprotocol.io) client | `npx -y @wealthville/mcp-server` |
+| [`solana-agent-kit-plugin`](solana-agent-kit-plugin/) | [Solana Agent Kit](https://github.com/sendaifun/solana-agent-kit) v2 agents | `npm i @wealthville/solana-agent-kit-plugin` |
+| [`elizaos-plugin`](elizaos-plugin/) | [ElizaOS](https://github.com/elizaOS/eliza) agents | `npm i @wealthville/plugin-wealthville` |
 
 All three are thin, **read-only** wrappers over four public `GET` endpoints — no wallet access, nothing to sign, no key required (a free [partner key](https://wealthville.net/developers) raises the rate limit).
 
 ## Quick start (MCP + Claude)
 
 ```bash
-git clone https://github.com/amitesh-m/wealthville-integrations.git
-cd wealthville-integrations/mcp-server
-npm install && npm run build
-claude mcp add wealthville -- node "$PWD/dist/index.js"
+claude mcp add wealthville -- npx -y @wealthville/mcp-server
 ```
 
 Then ask Claude: *"Is `Czfq3xZZDmsdGdUyrNLtRhGc47cXcZtLG4crryfu44zE` a good pool to LP into?"*

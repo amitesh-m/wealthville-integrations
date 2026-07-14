@@ -18,6 +18,10 @@ Read-only public `GET` endpoints — no wallet access, no signing. Responses alw
 
 ## Usage
 
+```bash
+npm install @wealthville/plugin-wealthville
+```
+
 ```ts
 import { wealthvillePlugin } from '@wealthville/plugin-wealthville';
 

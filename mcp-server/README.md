@@ -19,16 +19,10 @@ Every response includes the methodology link and the "not financial advice" note
 
 ## Install
 
-```bash
-git clone https://github.com/amitesh-m/wealthville-integrations.git
-cd wealthville-integrations/mcp-server
-npm install && npm run build
-```
-
 **Claude Code:**
 
 ```bash
-claude mcp add wealthville -- node /absolute/path/to/wealthville-integrations/mcp-server/dist/index.js
+claude mcp add wealthville -- npx -y @wealthville/mcp-server
 ```
 
 **Claude Desktop / other MCP clients** — add to the MCP config:
@@ -37,14 +31,14 @@ claude mcp add wealthville -- node /absolute/path/to/wealthville-integrations/mc
 {
   "mcpServers": {
     "wealthville": {
-      "command": "node",
-      "args": ["/absolute/path/to/wealthville-integrations/mcp-server/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "@wealthville/mcp-server"]
     }
   }
 }
 ```
 
-(Once published to npm: `"command": "npx", "args": ["-y", "@wealthville/mcp-server"]`.)
+**From source:** `npm install && npm run build`, then point your MCP config at `node dist/index.js`.
 
 ## Configuration (optional)
 
