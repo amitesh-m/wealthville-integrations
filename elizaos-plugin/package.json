@@ -1,0 +1,46 @@
+{
+  "name": "@wealthville/plugin-wealthville",
+  "version": "0.1.0",
+  "description": "ElizaOS plugin: Wealthville liquidity-pool scores, verdicts, and track record for DeFi agents",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "elizaos",
+    "eliza",
+    "ai-agent",
+    "solana",
+    "defi",
+    "liquidity-pools",
+    "wealthville"
+  ],
+  "homepage": "https://wealthville.net/developers",
+  "peerDependencies": {
+    "@elizaos/core": ">=0.25.0"
+  },
+  "peerDependenciesMeta": {
+    "@elizaos/core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitesh-m/wealthville-integrations.git",
+    "directory": "elizaos-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/amitesh-m/wealthville-integrations/issues"
+  }
+}
