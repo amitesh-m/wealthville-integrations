@@ -1,0 +1,44 @@
+# Lives at .github/workflows/publish-mcp.yml in the PUBLIC repo
+# (github.com/amitesh-m/wealthville-integrations). Kept here in the private
+# mirror for reference — the mirror script copies it into place.
+#
+# Trigger: push a tag like v0.1.1 → publishes @wealthville/mcp-server to npm
+# (needs NPM_TOKEN repo secret: granular, publish-scoped, bypass-2FA) and then
+# to the official MCP registry via GitHub OIDC (no registry secret needed —
+# repo ownership grants the io.github.amitesh-m/* namespace).
+name: Publish MCP server (npm + registry)
+on:
+  push:
+    tags: ["v*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC for mcp-publisher
+      contents: read
+    defaults:
+      run:
+        working-directory: mcp-server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run build
+      - name: Sync versions from tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+          jq --arg v "$VERSION" '.version = $v | .packages[0].version = $v' server.json > server.tmp && mv server.tmp server.json
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install mcp-publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+      - name: Login to MCP registry (OIDC)
+        run: ./mcp-publisher login github-oidc
+      - name: Publish to MCP registry
+        run: ./mcp-publisher publish

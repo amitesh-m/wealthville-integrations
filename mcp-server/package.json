@@ -1,6 +1,7 @@
 {
   "name": "@wealthville/mcp-server",
-  "version": "0.1.0",
+  "mcpName": "io.github.amitesh-m/wealthville",
+  "version": "0.1.1",
   "description": "MCP server exposing Wealthville pool scores, verdicts, and the live track record to AI assistants",
   "license": "MIT",
   "type": "module",
