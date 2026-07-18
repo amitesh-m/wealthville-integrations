@@ -40,6 +40,11 @@ function toResult(data: unknown) {
     };
 }
 
+// All four tools are read-only GET wrappers over the public Wealthville API — no
+// state changes and safe to retry. Surfaced as MCP annotation hints so Glama (and
+// any client) can flag them non-destructive / read-only.
+const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
+
 const server = new McpServer({ name: 'wealthville', version: '0.1.0' });
 
 server.tool(
@@ -48,6 +53,7 @@ server.tool(
     + 'Wealthville Score, 0-100) for one liquidity pool. Use before recommending or opening any LP position. '
     + 'Accepts a Solana pool address (base58) or an EVM 0x address / DefiLlama pool UUID.',
     { pool_address: z.string().min(8).describe('Pool address: Solana base58, EVM 0x, or DefiLlama UUID') },
+    READ_ONLY,
     async ({ pool_address }) => toResult(await apiGet(`/api/v1/scores/${encodeURIComponent(pool_address)}`)),
 );
 
@@ -59,6 +65,7 @@ server.tool(
         limit: z.number().int().min(1).max(100).optional().describe('How many pools (default 25)'),
         chain: z.string().optional().describe('"solana" (default), "evm" (all EVM chains), or one EVM chain e.g. "ethereum", "base"'),
     },
+    READ_ONLY,
     async ({ limit, chain }) => {
         const params = new URLSearchParams();
         if (limit) params.set('limit', String(limit));
@@ -74,6 +81,7 @@ server.tool(
     + 'resolved signals — misses included (the ledger is immutable at publish time). Use when asked whether '
     + 'Wealthville scores can be trusted, or for the system\'s recent performance.',
     { days: z.number().int().min(7).max(90).optional().describe('Window in days (default 30)') },
+    READ_ONLY,
     async ({ days }) => toResult(await apiGet(`/api/v1/track-record${days ? `?days=${days}` : ''}`)),
 );
 
@@ -82,6 +90,7 @@ server.tool(
     'Get the latest published Wealthville signals (ENTER/EXIT/RISK_OFF calls with narrative and confidence). '
     + 'Use for "any new LP signals?" questions.',
     { limit: z.number().int().min(1).max(50).optional().describe('How many signals (default 20)') },
+    READ_ONLY,
     async ({ limit }) => toResult(await apiGet(`/api/v1/signals/feed${limit ? `?limit=${limit}` : ''}`)),
 );
 
