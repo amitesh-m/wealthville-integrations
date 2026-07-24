@@ -1,0 +1,57 @@
+{
+  "manifest_version": "0.2",
+  "name": "wealthville",
+  "display_name": "Wealthville",
+  "version": "0.1.2",
+  "description": "Solana + EVM liquidity-pool scores: Enter/Hold/Exit verdicts and a 0-100 Wealthville Score.",
+  "long_description": "Wealthville gives your AI assistant a scored, track-recorded answer to \"should I LP into this pool?\" — Enter/Hold/Exit verdicts and a composite 0-100 Wealthville Score for Solana + EVM liquidity pools, plus a live, immutable, miss-inclusive track record. Four read-only tools wrap the public Wealthville data API; no wallet access, nothing to sign, no API key required (an optional partner key raises the rate limit).",
+  "author": {
+    "name": "amitesh-m",
+    "url": "https://wealthville.net"
+  },
+  "homepage": "https://wealthville.net/developers",
+  "documentation": "https://github.com/amitesh-m/wealthville-integrations/tree/main/mcp-server",
+  "support": "https://github.com/amitesh-m/wealthville-integrations/issues",
+  "icon": "icon.png",
+  "license": "MIT",
+  "keywords": ["solana", "evm", "defi", "liquidity-pools", "mcp", "wealthville", "scoring"],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "WEALTHVILLE_API_KEY": "${user_config.WEALTHVILLE_API_KEY}",
+        "WEALTHVILLE_API_URL": "${user_config.WEALTHVILLE_API_URL}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "get_pool_score", "description": "Wealthville verdict (ENTER/HOLD/EXIT/AVOID) + scores for one liquidity pool." },
+    { "name": "get_top_pools", "description": "Liquidity pools ranked by composite Wealthville Score, freshly scored." },
+    { "name": "get_track_record", "description": "Live signal track record: hit rates, IL-adjusted PnL, recent resolved signals." },
+    { "name": "get_signals_feed", "description": "Latest published ENTER/EXIT/RISK_OFF signals with narrative and confidence." }
+  ],
+  "user_config": {
+    "WEALTHVILLE_API_KEY": {
+      "type": "string",
+      "title": "API key (optional)",
+      "description": "Free partner key for a higher rate limit. Anonymous works at 60 req/min. Get one at https://wealthville.net/developers",
+      "required": false,
+      "sensitive": true
+    },
+    "WEALTHVILLE_API_URL": {
+      "type": "string",
+      "title": "API base URL (optional)",
+      "description": "Override the API base URL. Leave blank to use https://wealthville.net",
+      "required": false,
+      "default": "https://wealthville.net"
+    }
+  },
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18"
+    }
+  }
+}
