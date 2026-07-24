@@ -2,10 +2,16 @@
 # (github.com/amitesh-m/wealthville-integrations). Kept here in the private
 # mirror for reference — the mirror script copies it into place.
 #
-# Trigger: push a tag like v0.1.1 → publishes @wealthville/mcp-server to npm
-# (needs NPM_TOKEN repo secret: granular, publish-scoped, bypass-2FA) and then
-# to the official MCP registry via GitHub OIDC (no registry secret needed —
-# repo ownership grants the io.github.amitesh-m/* namespace).
+# Trigger: push a tag like v0.1.2 → publishes @wealthville/mcp-server to npm and
+# then to the official MCP registry (both over GitHub OIDC; repo ownership grants
+# the io.github.amitesh-m/* registry namespace).
+#
+# npm auth uses OIDC Trusted Publishing when a Trusted Publisher is configured on
+# npmjs.com for this package (Settings → Trusted Publisher → this repo +
+# publish-mcp.yml). Until then it falls back to the NPM_TOKEN secret — the newer
+# npm CLI prefers OIDC automatically and uses the token only if OIDC is
+# unavailable, so both work with no edit. Once the Trusted Publisher is live the
+# secret can be deleted. --provenance signs the release via the same OIDC token.
 name: Publish MCP server (npm + registry)
 on:
   push:
@@ -14,7 +20,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # OIDC for mcp-publisher
+      id-token: write # OIDC — used for both npm trusted publishing and mcp-publisher
       contents: read
     defaults:
       run:
@@ -25,6 +31,10 @@ jobs:
         with:
           node-version: "lts/*"
           registry-url: "https://registry.npmjs.org"
+      # OIDC trusted publishing + --provenance need npm >= 11.5.1; lts/* still
+      # ships npm 10.x, so upgrade the CLI before publishing.
+      - name: Upgrade npm (OIDC trusted publishing support)
+        run: npm install -g npm@latest
       - run: npm install
       - run: npm run build
       - name: Sync versions from tag
@@ -32,13 +42,13 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/v}
           npm version "$VERSION" --no-git-tag-version --allow-same-version
           jq --arg v "$VERSION" '.version = $v | .packages[0].version = $v' server.json > server.tmp && mv server.tmp server.json
-      - name: Publish to npm (skip if version already exists)
+      - name: Publish to npm (OIDC trusted publishing; token fallback; skip if version exists)
         run: |
           VERSION=$(node -p "require('./package.json').version")
           if npm view "@wealthville/mcp-server@$VERSION" version >/dev/null 2>&1; then
             echo "npm already has $VERSION - skipping publish"
           else
-            npm publish --access public
+            npm publish --access public --provenance
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
