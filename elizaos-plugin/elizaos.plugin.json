@@ -2,7 +2,7 @@
   "id": "wealthville",
   "name": "Wealthville",
   "description": "Liquidity-pool intelligence for DeFi agents: Enter/Hold/Exit verdicts, composite 0-100 Wealthville Scores for Solana + EVM pools, and a public miss-inclusive track record.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "kind": "plugin",
   "requiredSecrets": [],
   "optionalSecrets": [
@@ -22,6 +22,10 @@
   },
   "uiHints": {
     "homepage": "https://wealthville.net/developers",
-    "categories": ["defi", "solana", "data"]
+    "categories": [
+      "defi",
+      "solana",
+      "data"
+    ]
   }
 }

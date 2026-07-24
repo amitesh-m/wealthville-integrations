@@ -1,6 +1,6 @@
 {
   "name": "@wealthville/plugin-wealthville",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "ElizaOS plugin: Wealthville liquidity-pool scores, verdicts, and track record for DeFi agents",
   "license": "MIT",
   "type": "module",
@@ -8,6 +8,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
+    "images",
     "README.md",
     "elizaos.plugin.json"
   ],
@@ -24,6 +25,23 @@
     "wealthville"
   ],
   "homepage": "https://wealthville.net/developers",
+  "agentConfig": {
+    "pluginType": "elizaos:plugin:1.0.0",
+    "pluginParameters": {
+      "WEALTHVILLE_API_KEY": {
+        "type": "string",
+        "description": "Optional free partner key for a higher rate limit (anonymous works at 60 req/min). Get one at https://wealthville.net/developers",
+        "required": false,
+        "sensitive": true
+      },
+      "WEALTHVILLE_API_URL": {
+        "type": "string",
+        "description": "Override the API base URL (default https://wealthville.net)",
+        "required": false,
+        "sensitive": false
+      }
+    }
+  },
   "peerDependencies": {
     "@elizaos/core": ">=2.0.0-alpha"
   },
