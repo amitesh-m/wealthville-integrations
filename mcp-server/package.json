@@ -1,12 +1,13 @@
 {
   "name": "@wealthville/mcp-server",
   "mcpName": "io.github.amitesh-m/wealthville",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "MCP server exposing Wealthville pool scores, verdicts, and the live track record to AI assistants",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "wealthville-mcp": "dist/index.js"
+    "wealthville-mcp": "dist/index.js",
+    "wealthville-mcp-http": "dist/http.js"
   },
   "main": "dist/index.js",
   "files": [
@@ -14,8 +15,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');['dist/index.js','dist/http.js'].forEach(f=>fs.chmodSync(f,0o755))\"",
+    "start": "node dist/index.js",
+    "start:http": "node dist/http.js"
   },
   "keywords": [
     "mcp",
@@ -28,9 +30,11 @@
   "homepage": "https://wealthville.net/developers",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
+    "express": "^4.21.2",
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.11.0",
     "typescript": "^5.4.0"
   },

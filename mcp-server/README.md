@@ -40,6 +40,23 @@ claude mcp add wealthville -- npx -y @wealthville/mcp-server
 
 **From source:** `npm install && npm run build`, then point your MCP config at `node dist/index.js`.
 
+## Hosted / remote (HTTP)
+
+For platforms that need an HTTPS endpoint (e.g. Smithery's "MCP Server URL"), the
+same server also runs over **Streamable HTTP** at `POST /mcp` — stateless, so it
+scales horizontally. Build the image and host it anywhere:
+
+```bash
+docker build -f Dockerfile.http -t wealthville-mcp-http .
+docker run -p 8080:8080 wealthville-mcp-http
+# health:  curl -s localhost:8080/health
+# then expose it over HTTPS and use  https://<your-host>/mcp
+```
+
+Or without Docker: `npm run build && npm run start:http` (listens on `$PORT`, default 8080).
+Per-request config is accepted via `?config=<base64 JSON>`, `?wealthvilleApiKey=…`, or an
+`x-api-key` header; otherwise the `WEALTHVILLE_*` env vars below apply.
+
 ## Configuration (optional)
 
 | Env var | Purpose |
