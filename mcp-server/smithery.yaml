@@ -1,0 +1,27 @@
+# Smithery config for the Wealthville MCP server.
+# This is a locally-run (stdio) server — Smithery lists it and installs it on the
+# user's machine via `npx`. No hosted HTTP endpoint is required.
+# Docs: https://smithery.ai/docs/build/project-config/smithery.yaml
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      wealthvilleApiKey:
+        type: string
+        title: API key (optional)
+        description: Free partner key for a higher rate limit. Anonymous works at 60 req/min.
+      wealthvilleApiUrl:
+        type: string
+        title: API base URL (optional)
+        description: Override the API base URL. Defaults to https://wealthville.net
+    required: []
+  commandFunction: |
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@wealthville/mcp-server'],
+      env: {
+        ...(config.wealthvilleApiKey ? { WEALTHVILLE_API_KEY: config.wealthvilleApiKey } : {}),
+        ...(config.wealthvilleApiUrl ? { WEALTHVILLE_API_URL: config.wealthvilleApiUrl } : {})
+      }
+    })
