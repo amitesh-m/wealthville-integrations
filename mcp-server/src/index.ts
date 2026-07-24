@@ -10,7 +10,15 @@
  */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { createRequire } from 'node:module';
 import { z } from 'zod';
+
+// Single source of truth for the version: read package.json at runtime so the
+// serverInfo reported over MCP always matches the published npm version. dist/
+// sits one level below package.json in the tarball, and npm always includes
+// package.json, so '../package.json' resolves in the installed package.
+const require = createRequire(import.meta.url);
+const { version: VERSION } = require('../package.json') as { version: string };
 
 const BASE_URL = (process.env.WEALTHVILLE_API_URL || 'https://wealthville.net').replace(/\/$/, '');
 const API_KEY = process.env.WEALTHVILLE_API_KEY;
@@ -45,7 +53,7 @@ function toResult(data: unknown) {
 // any client) can flag them non-destructive / read-only.
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
 
-const server = new McpServer({ name: 'wealthville', version: '0.1.0' });
+const server = new McpServer({ name: 'wealthville', version: VERSION });
 
 server.tool(
     'get_pool_score',

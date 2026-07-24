@@ -20,3 +20,22 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
+
+  # Guard the one drift vector the runtime version-read can't cover: server.json
+  # (registry manifest) must agree with mcp-server/package.json. The publish
+  # workflow syncs both from the git tag, but a hand edit could still diverge —
+  # fail the build early rather than ship a mismatched registry entry.
+  version-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: server.json version matches package.json
+        run: |
+          PKG=$(node -p "require('./mcp-server/package.json').version")
+          SRV=$(node -p "require('./mcp-server/server.json').version")
+          SRV_PKG=$(node -p "require('./mcp-server/server.json').packages[0].version")
+          echo "package.json=$PKG  server.json=$SRV  server.json.packages[0]=$SRV_PKG"
+          if [ "$PKG" != "$SRV" ] || [ "$PKG" != "$SRV_PKG" ]; then
+            echo "::error::version mismatch — package.json ($PKG) must equal server.json ($SRV) and packages[0].version ($SRV_PKG)"
+            exit 1
+          fi
