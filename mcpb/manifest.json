@@ -4,7 +4,7 @@
   "display_name": "Wealthville",
   "version": "0.3.1",
   "description": "Solana + EVM liquidity-pool scores: Enter/Hold/Exit verdicts and a 0-100 Wealthville Score.",
-  "long_description": "Wealthville gives your AI assistant a scored, track-recorded answer to \"should I LP into this pool?\" \u2014 Enter/Hold/Exit verdicts and a composite 0-100 Wealthville Score for Solana + EVM liquidity pools, plus a live, immutable, miss-inclusive track record. Four read-only tools wrap the public Wealthville data API; no wallet access, nothing to sign, no API key required (an optional partner key raises the rate limit).",
+  "long_description": "Wealthville gives your AI assistant a scored, track-recorded answer to \"should I LP into this pool?\" — Enter/Hold/Exit verdicts and a composite 0-100 Wealthville Score for Solana + EVM liquidity pools, plus a live, immutable, miss-inclusive track record. Four read-only tools wrap the public Wealthville data API; no wallet access, nothing to sign, no API key required (an optional partner key raises the rate limit).",
   "author": {
     "name": "amitesh-m",
     "url": "https://wealthville.net"
@@ -14,26 +14,14 @@
   "support": "https://github.com/amitesh-m/wealthville-integrations/issues",
   "icon": "icon.png",
   "license": "MIT",
-  "privacy_policies": [
-    "https://wealthville.net/privacy"
-  ],
-  "keywords": [
-    "solana",
-    "evm",
-    "defi",
-    "liquidity-pools",
-    "mcp",
-    "wealthville",
-    "scoring"
-  ],
+  "privacy_policies": ["https://wealthville.net/privacy"],
+  "keywords": ["solana", "evm", "defi", "liquidity-pools", "mcp", "wealthville", "scoring"],
   "server": {
     "type": "node",
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": [
-        "${__dirname}/dist/index.js"
-      ],
+      "args": ["${__dirname}/dist/index.js"],
       "env": {
         "WEALTHVILLE_API_KEY": "${user_config.WEALTHVILLE_API_KEY}",
         "WEALTHVILLE_API_URL": "${user_config.WEALTHVILLE_API_URL}"
@@ -41,22 +29,10 @@
     }
   },
   "tools": [
-    {
-      "name": "get_pool_score",
-      "description": "Wealthville verdict (ENTER/HOLD/EXIT/AVOID) + scores for one liquidity pool."
-    },
-    {
-      "name": "get_top_pools",
-      "description": "Liquidity pools ranked by composite Wealthville Score, freshly scored."
-    },
-    {
-      "name": "get_track_record",
-      "description": "Live signal track record: hit rates, IL-adjusted PnL, recent resolved signals."
-    },
-    {
-      "name": "get_signals_feed",
-      "description": "Latest published ENTER/EXIT/RISK_OFF signals with narrative and confidence."
-    }
+    { "name": "get_pool_score", "description": "Wealthville verdict (ENTER/HOLD/EXIT/AVOID) + scores for one liquidity pool." },
+    { "name": "get_top_pools", "description": "Liquidity pools ranked by composite Wealthville Score, freshly scored." },
+    { "name": "get_track_record", "description": "Live signal track record: hit rates, IL-adjusted PnL, recent resolved signals." },
+    { "name": "get_signals_feed", "description": "Latest published ENTER/EXIT/RISK_OFF signals with narrative and confidence." }
   ],
   "user_config": {
     "WEALTHVILLE_API_KEY": {
