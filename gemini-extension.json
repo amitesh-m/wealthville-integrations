@@ -1,0 +1,10 @@
+{
+  "name": "wealthville",
+  "version": "0.3.1",
+  "description": "Score DeFi liquidity pools before providing liquidity: a 0-100 pool score and an Enter/Hold/Exit/Reduce/Avoid verdict for ~68,800 Solana pools and 575 EVM pools, with a public miss-inclusive track record.",
+  "mcpServers": {
+    "wealthville": {
+      "httpUrl": "https://wealthville.net/mcp"
+    }
+  }
+}
