@@ -7,7 +7,7 @@
   "long_description": "Wealthville gives your AI assistant a scored, track-recorded answer to \"should I LP into this pool?\" — Enter/Hold/Exit verdicts and a composite 0-100 Wealthville Score for Solana + EVM liquidity pools, plus a live, immutable, miss-inclusive track record. Four read-only tools wrap the public Wealthville data API; no wallet access, nothing to sign, no API key required (an optional partner key raises the rate limit).",
   "author": {
     "name": "amitesh-m",
-    "url": "https://wealthville.net"
+    "url": "https://github.com/amitesh-m"
   },
   "homepage": "https://wealthville.net/developers",
   "documentation": "https://github.com/amitesh-m/wealthville-integrations/tree/main/mcp-server",
