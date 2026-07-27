@@ -28,7 +28,13 @@ const DISCLAIMER =
 // All four tools are read-only GET wrappers over the public Wealthville API — no
 // state changes and safe to retry. Surfaced as MCP annotation hints so Glama (and
 // any client) can flag them non-destructive / read-only.
-const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
+const READ_ONLY_HINTS = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true };
+
+// Anthropic's connector review criteria require every tool to carry a human-readable `title`
+// ALONGSIDE the applicable hints — a missing title is an automatic rejection, not a warning.
+// The hints alone were not enough. Titles are what a user sees in a permission prompt, so they
+// say what the tool reads, not how it is implemented.
+const readOnly = (title: string) => ({ title, ...READ_ONLY_HINTS });
 
 export interface WealthvilleConfig {
     /** Partner key for a higher rate limit; sent as x-api-key. Optional. */
@@ -70,7 +76,7 @@ export function buildServer(config: WealthvilleConfig = {}): McpServer {
         + 'Wealthville Score, 0-100) for one liquidity pool. Use before recommending or opening any LP position. '
         + 'Accepts a Solana pool address (base58) or an EVM 0x address / DefiLlama pool UUID.',
         { pool_address: z.string().min(8).describe('Pool address: Solana base58, EVM 0x, or DefiLlama UUID') },
-        READ_ONLY,
+        readOnly('Look up a pool score and verdict'),
         async ({ pool_address }) => toResult(await apiGet(`/api/v1/scores/${encodeURIComponent(pool_address)}`)),
     );
 
@@ -82,7 +88,7 @@ export function buildServer(config: WealthvilleConfig = {}): McpServer {
             limit: z.number().int().min(1).max(100).optional().describe('How many pools (default 25)'),
             chain: z.string().optional().describe('"solana" (default), "evm" (all EVM chains), or one EVM chain e.g. "ethereum", "base"'),
         },
-        READ_ONLY,
+        readOnly('List top-ranked liquidity pools'),
         async ({ limit, chain }) => {
             const params = new URLSearchParams();
             if (limit) params.set('limit', String(limit));
@@ -98,7 +104,7 @@ export function buildServer(config: WealthvilleConfig = {}): McpServer {
         + 'resolved signals — misses included (the ledger is immutable at publish time). Use when asked whether '
         + 'Wealthville scores can be trusted, or for the system\'s recent performance.',
         { days: z.number().int().min(7).max(90).optional().describe('Window in days (default 30)') },
-        READ_ONLY,
+        readOnly('Get the published signal track record'),
         async ({ days }) => toResult(await apiGet(`/api/v1/track-record${days ? `?days=${days}` : ''}`)),
     );
 
@@ -107,7 +113,7 @@ export function buildServer(config: WealthvilleConfig = {}): McpServer {
         'Get the latest published Wealthville signals (ENTER/EXIT/RISK_OFF calls with narrative and confidence). '
         + 'Use for "any new LP signals?" questions.',
         { limit: z.number().int().min(1).max(50).optional().describe('How many signals (default 20)') },
-        READ_ONLY,
+        readOnly('Get the latest published signals'),
         async ({ limit }) => toResult(await apiGet(`/api/v1/signals/feed${limit ? `?limit=${limit}` : ''}`)),
     );
 
