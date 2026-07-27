@@ -9,7 +9,13 @@
     "source": "github",
     "subfolder": "mcp-server"
   },
-  "version": "0.1.3",
+  "version": "0.1.4",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://wealthville.net/mcp"
+    }
+  ],
   "packages": [
     {
       "registryType": "npm",
