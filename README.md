@@ -1,5 +1,10 @@
 # Wealthville Integrations
 
+[![smithery badge](https://smithery.ai/badge/amitesh-m/wealthville)](https://smithery.ai/servers/amitesh-m/wealthville)
+[![npm](https://img.shields.io/npm/v/%40wealthville%2Fmcp-server?label=%40wealthville%2Fmcp-server)](https://www.npmjs.com/package/@wealthville/mcp-server)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.amitesh--m%2Fwealthville-1f6feb)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.amitesh-m/wealthville)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 Official connectors for the [Wealthville](https://wealthville.net) public data API — liquidity-pool **Enter/Hold/Exit verdicts** and the composite **Wealthville Score (0–100)** for Solana + EVM pools, backed by a public, immutable, **miss-inclusive** [track record](https://www.wealthville.net/track-record).
 
 | Package | For | Install |
