@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Captcha Assistant",
+  "version": "0.1.0",
+  "description": "Detects captchas on any page and resolves them automatically via a solving service, or hands them to you in a companion window.",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "storage",
+    "alarms",
+    "scripting",
+    "activeTab",
+    "notifications"
+  ],
+  "optional_permissions": [
+    "debugger"
+  ],
+  "host_permissions": [
+    "https://api.2captcha.com/*",
+    "https://api.capsolver.com/*"
+  ],
+  "background": {
+    "service_worker": "background/orchestrator.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/detect.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Captcha Assistant"
+  },
+  "options_page": "options/options.html",
+  "icons": {
+    "128": "icons/icon128.png"
+  }
+}

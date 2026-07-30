@@ -1,0 +1,28 @@
+{
+  "name": "@wealthville/captcha-assistant",
+  "version": "0.1.0",
+  "description": "Chrome MV3 extension that detects captchas and resolves them automatically via pluggable solving services, with a manual companion-window fallback",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.4.0",
+    "vitest": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitesh-m/wealthville-integrations.git",
+    "directory": "chrome-extension"
+  }
+}
